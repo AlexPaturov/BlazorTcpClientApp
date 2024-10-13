@@ -1,0 +1,85 @@
+﻿@page "/"
+@using BlazorTcpClientApp.Models
+@using BlazorTcpClientApp.Services
+@inject UserService UserService
+@inject XmlDecodeService xmlDecode
+@inject IJSRuntime JSRuntime
+
+<h3>User Information</h3>
+
+<div class="mb-3">
+    <label for="idInput" class="form-label">User ID:</label>
+    <input id="idInput" type="number" @bind="user.ID" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label for="pcNameInput" class="form-label">PC Name:</label>
+    <input id="pcNameInput" type="text" @bind="user.PCName" class="form-control" />
+</div>
+
+<div class="mt-3">
+    <button class="btn btn-primary me-2" @onclick="SaveUser">Save User</button>
+    <button class="btn btn-secondary" @onclick="LoadUser">Load User</button>
+</div>
+
+<hr />
+
+<h4>Received Data:</h4>
+
+<div class="mb-3">
+    <textarea class="form-control" rows="5" readonly>@user.ReceivedData</textarea>
+</div>
+
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-info mt-3" role="alert">
+        @message
+    </div>
+}
+
+@code {
+    private UserModel user = new UserModel();
+    private string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Retrieve the current user data
+        user = await UserService.GetUserModelAsync();
+
+        // Subscribe to the data updated event
+        // UserService.OnUserDataUpdated += HandleUserDataUpdated;
+    }
+
+    private async void HandleUserDataUpdated(UserModel updatedUser)
+    {
+        // Update the local user object
+        user = updatedUser;
+
+        // Invoke StateHasChanged to update the UI
+        await InvokeAsync(StateHasChanged);
+
+        // Perform JS interop calls if necessary
+        // For example, show a toast notification or update the UI dynamically
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Received new data from TCP server.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"JS Interop Error: {ex.Message}");
+        }
+    }
+
+    private async Task SaveUser()
+    {
+        await UserService.UpdateUserModelAsync(user);
+        message = "User information saved successfully!";
+    }
+
+    private async Task LoadUser()
+    {
+        user = await UserService.GetUserModelAsync();
+        StateHasChanged();
+    }
+}
