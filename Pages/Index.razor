@@ -3,6 +3,7 @@
 @using BlazorTcpClientApp.Services
 @inject UserService UserService
 @inject XmlDecodeService xmlDecode
+@inject CommandService commandService
 @inject IJSRuntime JSRuntime
 
 <h3>User Information</h3>
@@ -45,8 +46,9 @@
     protected override async Task OnInitializedAsync()
     {
         // Retrieve the current user data
+        await commandService.ExecuteAsync();
         user = await UserService.GetUserModelAsync();
-
+        StateHasChanged();
         // Subscribe to the data updated event
         // UserService.OnUserDataUpdated += HandleUserDataUpdated;
     }

@@ -20,7 +20,7 @@ namespace BlazorTcpClientApp
             builder.Services.AddSingleton<XmlDecodeService>();  // служба хмл - декодер
             builder.Services.AddSingleton<UserService>();       // служба служит обработчиком и хранилищем информации о пользователе
             builder.Services.AddSingleton<TcpClientService>();  // служба получающая имя пк юзера по TCP от службы windows
-            builder.Services.AddHostedService<CommandService>();// 
+            builder.Services.AddSingleton<CommandService>();    // 
 
 
             //builder.Services.AddSingleton<UserServiceTwo>();

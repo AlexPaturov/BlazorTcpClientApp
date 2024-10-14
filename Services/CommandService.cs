@@ -1,7 +1,6 @@
-﻿// Services/CommandService.cs
-namespace BlazorTcpClientApp.Services
+﻿namespace BlazorTcpClientApp.Services
 {
-    public class CommandService : BackgroundService
+    public class CommandService
     {
         private readonly TcpClientService _tcpClientService;
         private readonly ILogger<CommandService> _logger;
@@ -19,7 +18,8 @@ namespace BlazorTcpClientApp.Services
             _userService = userService;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        // мне кажется здесь нужно изменить логику вызова 1
+        public async Task ExecuteAsync(CancellationToken stoppingToken = default)
         {
             _logger.LogInformation("CommandService is starting.");
 
@@ -37,7 +37,6 @@ namespace BlazorTcpClientApp.Services
                     // Start receiving data
                     _ = _tcpClientService.ReceiveDataAsync(OnDataReceived, stoppingToken);
 
-                    // Send the "PING" command once
                     string command = "<Request method='getPcName'/>";
                     try
                     {
@@ -82,17 +81,6 @@ namespace BlazorTcpClientApp.Services
                 var userService = scope.ServiceProvider.GetRequiredService<UserService>();
                 await userService.UpdatePcNameFromServiceAsync(data);
             }
-        }
-
-        public override Task StopAsync(CancellationToken stoppingToken)
-        {
-            _logger.LogInformation("CommandService is stopping.");
-            return base.StopAsync(stoppingToken);
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
         }
     }
 }
