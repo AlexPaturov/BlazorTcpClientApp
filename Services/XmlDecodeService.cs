@@ -20,7 +20,7 @@ namespace BlazorTcpClientApp.Services
 
                 if ((!string.IsNullOrEmpty(state)) && (state == success))
                 {
-                    userModel.PCName = xDoc.Root?
+                    userModel.PcName = xDoc.Root?
                                            .Element("StaticData")?
                                            .Element("MachineName")?
                                            .Value ?? "anonymous";
