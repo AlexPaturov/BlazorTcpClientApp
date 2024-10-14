@@ -18,12 +18,12 @@ namespace BlazorTcpClientApp.Models
         /// <summary>
         /// Доменное имя ПК пользователя.
         /// </summary>
-        public string PCName { get; set; }
+        public string PcName { get; set; }
 
         /// <summary>
         /// Табельный номер пользователя.
         /// </summary>
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// true - текущий пользователь - весовщик
