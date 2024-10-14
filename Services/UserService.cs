@@ -18,8 +18,8 @@ namespace BlazorTcpClientApp.Services
       
                 UserName = string.Empty,
                 DisplayName = string.Empty,
-                PCName  = string.Empty,
-                ID = string.Empty,
+                PcName  = string.Empty,
+                Id = string.Empty,
                 IsGdWeighter = false,
                 Vesy = "0",
                 IsPcGdWeight = false,
@@ -99,7 +99,7 @@ namespace BlazorTcpClientApp.Services
             await _semaphore.WaitAsync();
             try
             {
-                return _user.ID;
+                return _user.Id;
             }
             finally
             {
@@ -113,7 +113,7 @@ namespace BlazorTcpClientApp.Services
             await _semaphore.WaitAsync();
             try
             {
-                _user.ID = usrId;
+                _user.Id = usrId;
             }
             finally
             {
@@ -534,7 +534,7 @@ namespace BlazorTcpClientApp.Services
             try
             {
 
-                return _user.PCName;
+                return _user.PcName;
             }
             finally
             {
